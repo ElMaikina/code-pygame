@@ -31,7 +31,6 @@ class GameObjSolidAngle(pg.sprite.Sprite):
         self.width = math.hypot(dx, dy)
         self.angle = math.atan(dy / dx)
         angle = self.angle * 180 / np.pi
-        print(angle)
         self.height = 2
         self.img = pg.Surface((self.width, self.height), pg.SRCALPHA)
         self.img.fill(rgb)

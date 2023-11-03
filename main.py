@@ -14,29 +14,34 @@ paused = False
 scale = 3
 grid = 12
 time = 1
-fps = 60
+fps = 120
 
-window_size = np.array([480, 270])
+window_width = 640
+window_height = 360
+window_size = np.array([window_width, window_height])
 
 # Creates a display
 display = pg.display.set_mode(window_size)
 pg.display.set_caption('Game')
 
 blocks = []
+
 rgb = (255, 0, 255)
-blocks.append(Block(grid, 0, 21, 40, 1, rgb))
+blocks.append(Block(grid, 0, 29, 53, 1, rgb))
+
 rgb = (0, 255, 0)
-blocks.append(Block(grid, 15, 18, 7, 1, rgb))
+blocks.append(Block(grid, 15, 25, 7, 1, rgb))
+
 rgb = (0, 0, 255)
-blocks.append(Block(grid, 20, 15, 15, 1, rgb))
-rgb = (255, 255, 0)
-#blocks.append(Block(grid, 24, 10, 5, 3, rgb))
+blocks.append(Block(grid, 20, 20, 15, 1, rgb))
+
 rgb = (50, 255, 255)
 blocks.append(Block(grid, 4, 4, 1, 3, rgb))
+
 rgb = (255, 0, 0)
-blocks.append(Block(grid, 7, 12, 3, 3, rgb))
-blocks.append(Block(grid, 8, 15, 3, 3, rgb))
-blocks.append(Block(grid, 8, 5, 3, 3, rgb))
+blocks.append(Block(grid, 7, 17, 3, 3, rgb))
+blocks.append(Block(grid, 15, 17, 3, 6, rgb))
+blocks.append(Block(grid, 15, 5, 3, 6, rgb))
 
 angled = []
 rgb = (255, 255, 0)
@@ -49,8 +54,8 @@ spr = 'sprites/sphere.png'
 acc = 0.2
 fri = 0.1
 wlk = 3
-run = 6
-gf = 0.2
+run = 5
+gf = 0.1
 gl = grid
 js = -4
 x = 15
@@ -73,18 +78,20 @@ while running:
         sys.exit()
     	
     display.fill((0,0,50))
-    	
-    # Draws all of the sprites in the stage
-    for object in objects:
-        x = object.rect.left
-        y  = object.rect.top
-        display.blit(object.img, (x, y))
 
     # Make the player move
     player.move(grid, blocks, angled)
-    x = player.rect.x
-    y  = player.rect.y
-    display.blit(player.img, (x, y))
+    player_x = player.rect.x
+    player_y = player.rect.y
+
+    # Draws all of the sprites in the stage
+    for object in objects:
+        x = object.rect.left - player_x + window_width/2
+        y  = object.rect.top - player_y + window_height/2
+        display.blit(object.img, (x, y))
+
+    # Draw the player last so it's over everything else
+    display.blit(player.img, (window_width / 2, window_height / 2))
 	
     pg.display.update()
     clock.tick(fps)
